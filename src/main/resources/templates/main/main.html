@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{../css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{../css/bootstrap-theme.min.css}"/>
+    <script type="text/javascript" th:src="@{jqury/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+    <style>
+        .bode {
+            width: 800px;
+            margin: auto;
+        }
+
+
+        body {
+            background: #e8e8e8;
+        }
+
+        .search {
+            margin: auto;
+        }
+
+
+
+    </style>
+
+
+</head>
+
+<body>
+<div class="bode">
+    <nav class="navbar navbar-default " role="navigation">
+        <div class="na">
+            <div class="navbar-header col-md-3">
+                <a class="navbar-brand"  th:href="@{/}">xx论坛</a>
+            </div>
+
+            <div class="search">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+            <div class="navbar-right col-md-4">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a th:href="@{/login}" th:if="${session.id==null}">登录</a></li>
+                    <li class="navbar-left"><a th:href="@{/zhuye}" th:if="${session.id!=null}" th:text="${session.name}"></a></li>
+                    <li><a th:href="@{/zhuxiao}" th:if="${session.id!=null}">注销</a></li>
+                    <li><a th:href="@{/tobbc}" th:if="${session.id!=null}">发贴</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+
+    <div>
+        <div>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div><h2 th:text="${topic.getTitle()}" class="list-group-item-heading"></h2></div>
+                    <div><h3 th:text="${topic.getContext()}" class="list-group-item-text"></h3></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="list-group">
+        <div class="list-group-item">
+            <div th:each="reply : ${replies}">
+
+                <div class="list-group-item">
+                    <div th:text="${reply.getContext()}" class="list-group-item-text"></div>
+                    <div th:text="${reply.getTime()}"></div>
+                    <div th:text="${reply.getUser().getUsername()}"></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div>
+        <form th:action="@{/reply(id=${session.id},tid=${topic.getTid()})}" method="post">
+            <div><textarea rows="3" cols="26" name="context">
+
+            </textarea>
+            </div>
+            <div>
+                <a class="btn btn-xs btn-success" th:href="@{/login}" th:if="${session.id==null}" >登陆后发表</a>
+                <button class="btn btn-xs btn-success" type="submit" th:if="${session.id!=null}">发表</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
